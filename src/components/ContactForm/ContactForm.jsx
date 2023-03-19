@@ -1,5 +1,5 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import { Component } from 'react';
 import { Input } from 'components/Filter/Filter';
 import styled from 'styled-components';
@@ -7,6 +7,13 @@ import styled from 'styled-components';
 
 // const phoneRegExp =
 //   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const AddContactSchema = yup.object({
+  name: yup.string()
+    .min(2, 'Too Short name!')
+    .max(50, 'Too Long name!')
+    .required('Required'),
+  number: yup.string().min(4).max(10).required(),
+});
 
 export class ContactForm extends Component {
   state = {
@@ -27,7 +34,7 @@ export class ContactForm extends Component {
     return (
       <Formik
         initialValues={{ name: '', number: '' }}
-        // validationSchema={AddContactSchema}
+        validationSchema={AddContactSchema}
         onSubmit={this.handleSubmit}
       >
         <Form>

@@ -1,7 +1,7 @@
 import { Form, Formik, Field } from 'formik';
 import { Component } from 'react';
 import styled from 'styled-components';
-import { FilterStyled } from './Filter.styled';
+// import { FilterStyled } from './Filter.styled';
 
 export class Filter extends Component {
   state = {
@@ -38,4 +38,8 @@ export const Input = styled(Field)`
   display: block;
   width: 100%;
 margin-bottom: 15px;
+`
+
+const FilterStyled = styled(Form)`
+font-size: 55px;
 `

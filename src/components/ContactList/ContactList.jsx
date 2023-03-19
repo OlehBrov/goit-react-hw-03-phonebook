@@ -46,3 +46,4 @@ const List = styled.ul`
   gap: 15px;
   font-size: 20px;
 `
+
