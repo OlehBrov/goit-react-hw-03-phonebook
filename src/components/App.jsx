@@ -13,12 +13,9 @@ export class App extends Component {
   };
   componentDidMount() {
     const localState = localStorage.getItem('local-contacts');
-    console.log('localState', localState);
     const localStateParsed = JSON.parse(localState);
-    console.log('localStateParsed', localStateParsed);
     if (localStateParsed !== null) {
       this.setState({ contacts: localStateParsed });
-      console.log('set local parsed', this.state);
     }
   }
   componentDidUpdate(_, prevState) {
@@ -70,8 +67,8 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <ContactForm addContact={this.addContact} />
 
-        <h2>Contacts</h2>
-        <Filter filterContacts={this.filterContacts} />
+        <h2>Total contacts: { this.state.contacts.length}</h2>
+        {this.state.contacts.length !== 0&&<Filter filterContacts={this.filterContacts} />}
         <ContactList
           contactList={this.state}
           onDeleteContact={this.onDeleteContact}

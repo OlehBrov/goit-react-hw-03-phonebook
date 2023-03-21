@@ -1,69 +1,62 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { Component } from 'react';
 import { Input } from 'components/Filter/Filter';
 import styled from 'styled-components';
+
 // import { AddContactSchema } from 'components/Validation/Validation';
 
-// const phoneRegExp =
-//   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-const AddContactSchema = yup.object({
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const AddContactSchema = yup.object().shape({
   name: yup.string()
-    .min(2, 'Too Short name!')
-    .max(50, 'Too Long name!')
-    .required('Required'),
-  number: yup.string().min(4).max(10).required(),
+    .min(2, "Too Short name!")
+    .max(50, "Too Long name!")
+    .required("Name is required to fulfill"),
+  number: yup.string().min(4).max(10).matches(phoneRegExp).required("Phone number is required"),
 });
-
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+const itinialValues = {
+  name: '',
+  number: '',
+}
+export const ContactForm = ({addContact}) => {
+  
+  const handleSubmit = (values, { resetForm }) => {
+    addContact(values);
+    resetForm();
   };
- 
-  handleSubmit = (values, { resetForm }) => {
-    this.props.addContact(this.state);
-    this.setState({ name: '', number: '' });
-  };
-
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
-  render() {
-    return (
+  return (
       <Formik
-        initialValues={{ name: '', number: '' }}
+        initialValues={itinialValues}
         validationSchema={AddContactSchema}
-        onSubmit={this.handleSubmit}
+        onSubmit={handleSubmit}
       >
+        
         <Form>
           <LabelStyled htmlFor="name">Name</LabelStyled>
           <Input
             id="name"
             name="name"
             placeholder="Enter name"
-            value={this.state.name}
-            onChange={this.handleChange}
+            
           />
+          <ErrorMessage name="name" component="div" className="error" />
         
           <LabelStyled htmlFor="number">Phone Number</LabelStyled>
           <Input
             id="number"
             name="number"
             placeholder="Enter phone number"
-            value={this.state.number}
-            onChange={this.handleChange}
+
           />
-          <ErrorMessage name="number" />
+          <ErrorMessage name="number" component="div"/>
 
           <AddButton type="submit">Add to contacts</AddButton>
         </Form>
       </Formik>
     );
-  }
 }
 
+// 
 const LabelStyled = styled.label`
   font-size: 25px;
 `;
@@ -75,6 +68,6 @@ const AddButton = styled.button`
   cursor: pointer;
 `;
 
-const FormError = styled(ErrorMessage)`
-  display: block;
-`;
+// const FormError = styled(ErrorMessage)`
+//   display: block;
+// `;
